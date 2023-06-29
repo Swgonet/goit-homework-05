@@ -41,8 +41,8 @@ class AdressBook(UserDict):
         if not records:
             raise StopIteration
         self.page += 1
-        for rec in records:
-            print(rec.name.value, rec.phones)
+        for reco in records:
+            print(reco.name.value, reco.phones)
         return self
 
     
