@@ -36,7 +36,7 @@ class AdressBook(UserDict):
 
     def __next__(self):
         start = (self.page - 1) * self.page_size
-        end = start_index + self.page_size
+        end = start + self.page_size
         records = list(self.data.values())[start:end]
         if not records:
             raise StopIteration
