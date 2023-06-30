@@ -17,12 +17,13 @@ class AdressBook(UserDict):
     # count = 1
 
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         self.max_value = 1
         self.current_value = 0
         self.page = 1
         self.page_size = 1
-        
+
+    @input_error    
     def add_record(self, record):
         for i in record.phones:
             if isinstance(i, Phone) and i.value.startswith('+') and len(i.value) == 13:
@@ -45,8 +46,6 @@ class AdressBook(UserDict):
             print(reco.name.value, reco.phones)
         return self
 
-    
-
 class Record:
     def __init__(self, name, *phones, birthday=None):
         self.name = name
@@ -54,8 +53,11 @@ class Record:
         self.birthday = birthday
         if phone:
             self.phones.append(phone)
-                
-    
+
+    @input_error
+    def add_phone(self, phone):
+        self.phones.append(Phone(phone))
+        
     @input_error
     def days_to_birthday(self): 
         date_now = datetime.now()
@@ -65,20 +67,17 @@ class Record:
         return date_days.days
 
     @input_error
-    def add_phone(self, phone):
-        self.phones.append(Phone(phone))
-        
-        
-
     def remove_phone(self, phone):
         if phone in self.phones:
             self.phones.remove(phone)
 
+    @input_error
     def edit_phone(self, old_phone, new_phone):
         if old_phone in self.phones:
             index = self.phones.index(old_phone)
             self.phones[index] = Phone(new_phone)
- 
+    
+    @input_error
     def get_phones(self):
         return [phone.get_value() for phone in self.phones]
 
@@ -97,6 +96,9 @@ class Name(Field):
 class Phone(Field):
     pass
 
+class Birthday(Field):
+    pass
+
 if __name__ == "__main__":
     name = Name('bob')
     phone = Phone('+123456789000')
@@ -109,4 +111,3 @@ if __name__ == "__main__":
     assert isinstance(ab['bob'].phones[0], Phone)
     assert ab['bob'].phones[0].value == '+123456789000'
     print('All Ok)')
-
