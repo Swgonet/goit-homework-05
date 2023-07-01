@@ -86,7 +86,16 @@ class Record:
 
 class Field:
     def __init__(self, value):
+        self.__value = None
         self.value = value
+    
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, value):
+        self.__value = value
     
 # который будет родительским для всех полей, в нем потом реализуем логику общую для всех полей.
 
@@ -95,9 +104,22 @@ class Name(Field):
 
 class Phone(Field):
     pass
+    # @Field.value.setter
+    # def value(self, value: str):
+    #     if value.isdigit():
+    #         self.__value = value
+    #     else:
+    #         print('The name must contain only numbers')
 
 class Birthday(Field):
     pass
+    # @Field.value.setter
+    # def value(self, value: str):
+    #     try:
+    #         datetime.strptime(value, '%d %B %Y')
+    #         self.__value = value
+    #     except ValueError:
+    #         print('Invalid birthday format')
 
 if __name__ == "__main__":
     name = Name('bob')
