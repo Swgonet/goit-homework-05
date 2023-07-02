@@ -125,5 +125,4 @@ if __name__ == "__main__":
     assert isinstance(ab['bob'].name, Name)
     assert isinstance(ab['bob'].phones, list)
     assert isinstance(ab['bob'].phones[0], Phone)
-    # assert ab['bob'].phones[0].value == '+123456789000'
     print('All Ok)')
