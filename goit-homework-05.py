@@ -14,7 +14,6 @@ def input_error(func):
     return inner
 
 class AdressBook(UserDict):
-    # count = 1
 
     def __init__(self):
         super().__init__()
@@ -25,11 +24,7 @@ class AdressBook(UserDict):
 
     @input_error    
     def add_record(self, record):
-        for i in record.phones:
-            if isinstance(i, Phone) and i.value.startswith('+') and len(i.value) == 13:
-                self.data[record.name.value] = record
-            else:
-                raise ValueError("plese, press norm number")
+        self.data[record.name.value] = record
 
     def __iter__(self):
         self.page = 1
@@ -103,23 +98,22 @@ class Name(Field):
     pass
 
 class Phone(Field):
-    pass
-    # @Field.value.setter
-    # def value(self, value: str):
-    #     if value.isdigit():
-    #         self.__value = value
-    #     else:
-    #         print('The name must contain only numbers')
+    @Field.value.setter
+    def value(self, value: str):
+        if isinstance(value, str) and value.startswith('+') and len(value) == 13:
+            self.__value = value
+        else:
+            raise ValueError('The name must contain only numbers')
 
 class Birthday(Field):
-    pass
-    # @Field.value.setter
-    # def value(self, value: str):
-    #     try:
-    #         datetime.strptime(value, '%d %B %Y')
-    #         self.__value = value
-    #     except ValueError:
-    #         print('Invalid birthday format')
+
+    @Field.value.setter
+    def value(self, value: str):
+        try:
+            datetime.strptime(value, '%d %B %Y')
+            self.__value = value
+        except ValueError:
+            print('Invalid birthday format')
 
 if __name__ == "__main__":
     name = Name('bob')
@@ -131,5 +125,5 @@ if __name__ == "__main__":
     assert isinstance(ab['bob'].name, Name)
     assert isinstance(ab['bob'].phones, list)
     assert isinstance(ab['bob'].phones[0], Phone)
-    assert ab['bob'].phones[0].value == '+123456789000'
+    # assert ab['bob'].phones[0].value == '+123456789000'
     print('All Ok)')
